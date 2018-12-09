@@ -1,9 +1,10 @@
 from django.conf.urls import url
 
 
-from . import  views
+from . import views
 
-
+app_name = 'blog'  # 该url属于blog
 urlpatterns = [
-    url(r'^$', views.index, name='index')
+    url(r'^$', views.index, name='index'),
+    url(r'^post/(?P<pk>[0-9]+)/$', views.detail, name='detail')
 ]
