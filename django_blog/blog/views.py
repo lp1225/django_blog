@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 import markdown
 from django.http import HttpResponse
 
-from . models import Post
+from . models import Post, Category
 
 
 def index(request):
@@ -22,3 +22,22 @@ def detail(request, pk):
                                      'markdown.extensions.toc',
                                   ])
     return render(request, 'detail.html', context={'post': post})
+
+
+def archives(request, year, month):
+    """
+    归档
+    """
+    post_list = Post.objects.filter(created_time__year=year,
+                                    created_time__month=month
+                                    ).order_by('-created_time')
+    return render(request, 'index.html', context={'post_list': post_list})
+
+
+def category(request, pk):
+    """
+    分类
+    """
+    cate = get_object_or_404(Category, pk=pk)
+    post_list = Post.objects.filter(category=cate).order_by('-created_time')
+    return render(request, 'index.html', context={'post_list': post_list})
