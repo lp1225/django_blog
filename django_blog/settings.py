@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # 注册应用
     'django_blog.blog',
+    'django_blog.comments',
 ]
 
 MIDDLEWARE = [

@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 import markdown
-from django.http import HttpResponse
 
 from . models import Post, Category
+from .. comments.forms import CommentForm
 
 
 def index(request):
@@ -21,7 +21,14 @@ def detail(request, pk):
                                      'markdown.extensions.codehilite',
                                      'markdown.extensions.toc',
                                   ])
-    return render(request, 'detail.html', context={'post': post})
+    form = CommentForm()
+    # 获得post下的全部评论
+    comment_list = post.comment_set.all()
+    context = {'post': post,
+               'form': form,
+               'comment_list': comment_list
+               }
+    return render(request, 'detail.html', context=context)
 
 
 def archives(request, year, month):
