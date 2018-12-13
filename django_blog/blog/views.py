@@ -9,12 +9,14 @@ def index(request):
     """
     首页
     """
-    post_list = Post.objects.all().order_by('-created_time')  # 减法代表逆序
+    # post_list = Post.objects.all().order_by('-created_time')  # 减法代表逆序
+    post_list = Post.objects.all()
     return render(request, 'index.html', context={'post_list': post_list})
 
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    post.increase_views()
     # 转化为markdown语法
     post.body = markdown.markdown(post.body, extensions=[
                                      'markdown.extensions.extra',

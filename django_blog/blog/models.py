@@ -36,6 +36,8 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     author = models.ForeignKey(User)  # User是用户内置的
 
+    views = models.PositiveIntegerField(default=0)  # 记录阅读量
+
     def __str__(self):
         return self.title
 
@@ -44,3 +46,11 @@ class Post(models.Model):
         自定义
         """
         return reverse('blog:detail', kwargs={'pk': self.pk})
+
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views']) # 只更新这个字段
+
+    class Meta:
+        ordering = ['-created_time', 'title']
+
